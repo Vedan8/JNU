@@ -6,12 +6,14 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from account.utils import Util
 from django.core.mail import send_mail
 import random
+from rest_framework import status
+from rest_framework.response import Response
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
   # We are writing this becoz we need confirm password field in our Registratin Request
   class Meta:
     model = User
-    fields=['email','password','name','tc']
+    fields=['email','password']
     extra_kwargs={
       'password':{'write_only':True}
     }
@@ -25,7 +27,18 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
   #   return attrs
 
   def create(self, validate_data):
+    email=validate_data.get('email')
+    otp_code = str(random.randint(100000, 999999))
+    send_mail(
+            'Otp Validation',
+            f'Your otp is {otp_code}',
+            'otpkjaef@gmail.com',
+            [email],
+            fail_silently=False,
+        )
     return User.objects.create_user(**validate_data)
+
+
 
 class UserLoginSerializer(serializers.ModelSerializer):
   email = serializers.EmailField(max_length=255)
@@ -36,7 +49,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ['id', 'email', 'name']
+    fields = ['id', 'email']
 
 class UserChangePasswordSerializer(serializers.Serializer):
   password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
@@ -68,7 +81,7 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
       print('Encoded UID', uid)
       token = PasswordResetTokenGenerator().make_token(user)
       print('Password Reset Token', token)
-      link = 'http://localhost:8000/api/user/reset-passward/'+uid+'/'+token
+      link = 'https://auth-api-jexl.onrender.com/'+uid+'/'+token
       print('Password Reset Link', link)
       # Send EMail
       body = 'Click Following Link to Reset Your Password '+link
@@ -115,4 +128,5 @@ class UserPasswordResetSerializer(serializers.Serializer):
     except DjangoUnicodeDecodeError as identifier:
       PasswordResetTokenGenerator().check_token(user, token)
       raise serializers.ValidationError('Token is not Valid or Expired')
+  
   
