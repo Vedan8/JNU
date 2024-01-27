@@ -18,14 +18,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
       'password':{'write_only':True}
     }
 
-
-  # Validating Password and Confirm Password while Registration
-  # def validate(self, attrs):
-  #   password = attrs.get('password')
-  #   if password != password2:
-  #     raise serializers.ValidationError("Password and Confirm Password doesn't match")
-  #   return attrs
-
   def create(self, validate_data):
     email=validate_data.get('email')
     otp_code = str(random.randint(100000, 999999))
@@ -92,14 +84,6 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
             [email],
             fail_silently=False,
         )
-      # data = {
-      #   'subject':'Reset Your Password',
-      #   'body':body,
-      #   'to_email':user.email
-      # }
-      
-      # Ut
-      # il.send_email(data)
       return attrs
     else:
       raise serializers.ValidationError('You are not a Registered User')

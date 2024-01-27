@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'account',
+    'category',
+    'cloudinary',
+    'cloudinary_storage'
 ]
 
 MIDDLEWARE = [
@@ -177,3 +180,15 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+
+import cloudinary
+          
+
+CLOUDINARY_STORAGE={
+    'CLOUD_NAME':'dtfo1nvhr',
+    'API_KEY':'637226244447165',
+    'API_SECRET':'JPNPuma73d9EhKM_aJ1aOd9XMlQ'
+}
+DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
+
+

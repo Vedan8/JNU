@@ -3,7 +3,7 @@ from django.contrib.auth.models import BaseUserManager,AbstractBaseUser
 
 #  Custom User Manager
 class UserManager(BaseUserManager):
-  def create_user(self, email, password=None, password2=None):
+  def create_user(self, email, password=None):
       """
       Creates and saves a User with the given email, name, tc and password.
       """
@@ -64,11 +64,17 @@ class User(AbstractBaseUser):
       "Is the user a member of staff?"
       # Simplest possible answer: All admins are staff
       return self.is_admin
- 
+
 class Emails(models.Model):
     email=models.EmailField()
     def __str__(self):
         return self.id
+    
+
+
+
+
+
 
 
 
