@@ -4,24 +4,25 @@ from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeErr
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from account.utils import Util
+from django.core.mail import send_mail
+import random
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
   # We are writing this becoz we need confirm password field in our Registratin Request
-  password2 = serializers.CharField(style={'input_type':'password'}, write_only=True)
   class Meta:
     model = User
-    fields=['email', 'name', 'password', 'password2', 'tc']
+    fields=['email','password','name','tc']
     extra_kwargs={
       'password':{'write_only':True}
     }
 
+
   # Validating Password and Confirm Password while Registration
-  def validate(self, attrs):
-    password = attrs.get('password')
-    password2 = attrs.get('password2')
-    if password != password2:
-      raise serializers.ValidationError("Password and Confirm Password doesn't match")
-    return attrs
+  # def validate(self, attrs):
+  #   password = attrs.get('password')
+  #   if password != password2:
+  #     raise serializers.ValidationError("Password and Confirm Password doesn't match")
+  #   return attrs
 
   def create(self, validate_data):
     return User.objects.create_user(**validate_data)
@@ -58,6 +59,7 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
   class Meta:
     fields = ['email']
 
+
   def validate(self, attrs):
     email = attrs.get('email')
     if User.objects.filter(email=email).exists():
@@ -70,12 +72,21 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
       print('Password Reset Link', link)
       # Send EMail
       body = 'Click Following Link to Reset Your Password '+link
-      data = {
-        'subject':'Reset Your Password',
-        'body':body,
-        'to_email':user.email
-      }
-      # Util.send_email(data)
+      send_mail(
+            'Password Reset',
+            f'Reset your password using the following link {body}',
+            'otpkjaef@gmail.com',
+            [email],
+            fail_silently=False,
+        )
+      # data = {
+      #   'subject':'Reset Your Password',
+      #   'body':body,
+      #   'to_email':user.email
+      # }
+      
+      # Ut
+      # il.send_email(data)
       return attrs
     else:
       raise serializers.ValidationError('You are not a Registered User')
