@@ -68,5 +68,18 @@ class SendPasswordResetEmailView(APIView):
     serializer = SendPasswordResetEmailSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     return Response({'msg':'Password Reset link send. Please check your Email'}, status=status.HTTP_200_OK)
+  
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+
+class UserLogoutView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        # Invalidate the user's token
+        request.auth.delete()  # For Token Authentication
+
+        return Response({'msg': 'Logout successful'}, status=status.HTTP_200_OK)
 
   
