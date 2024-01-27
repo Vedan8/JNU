@@ -49,7 +49,8 @@ class UploadImageView(generics.CreateAPIView):
             category=serializer.validated_data['category']
             description=serializer.validated_data['description']
             name=serializer.validated_data['name']
-            your_model_instance = YourModel(image_field=image_file,category=category,description=description,name=name)
+            itemname=serializer.validated_data['itemname']
+            your_model_instance = YourModel(image_field=image_file,category=category,description=description,name=name,itemname=itemname)
             your_model_instance.save()
 
             # Optionally, you may want to return the details of the created instance
