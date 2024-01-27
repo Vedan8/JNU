@@ -60,6 +60,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOWED_ORIGINS = ['*']
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Your frontend development server
+    "https://auth-api-jexl.onrender.com",
+]
+
 ROOT_URLCONF = 'djangoauthapi1.urls'
 
 TEMPLATES = [
