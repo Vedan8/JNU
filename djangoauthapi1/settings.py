@@ -60,12 +60,26 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = ['*']
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Your frontend development server
-    "https://auth-api-jexl.onrender.com",
-]
+
+CORS_ALLOWED_ORIGINS = ['*']
+CORS_ALLOW_ALL_ORIGINS: True
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+from corsheaders.defaults import default_methods
+
+CORS_ALLOW_METHODS = (
+    *default_methods,
+    "POKE",
+)
+CORS_ALLOW_CREDENTIALS: True
+CORS_ALLOW_PRIVATE_NETWORK: True
 
 ROOT_URLCONF = 'djangoauthapi1.urls'
 
