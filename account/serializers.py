@@ -19,15 +19,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     }
 
   def create(self, validate_data):
-    email=validate_data.get('email')
-    otp_code = str(random.randint(100000, 999999))
-    send_mail(
-            'Otp Validation',
-            f'Your otp is {otp_code}',
-            'otpkjaef@gmail.com',
-            [email],
-            fail_silently=False,
-        )
     return User.objects.create_user(**validate_data)
 
 
