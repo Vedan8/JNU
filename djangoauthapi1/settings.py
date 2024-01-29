@@ -62,24 +62,10 @@ MIDDLEWARE = [
 
 
 
-CORS_ALLOW_ALL_ORIGINS: True
-CORS_ALLOW_METHODS = (
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-)
-from corsheaders.defaults import default_methods
 
-CORS_ALLOW_METHODS = (
-    *default_methods,
-    "POKE",
-)
+
 CORS_ALLOW_CREDENTIALS: True
-CORS_ALLOW_PRIVATE_NETWORK: True
-
+CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = 'djangoauthapi1.urls'
 
 TEMPLATES = [
